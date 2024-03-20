@@ -23,8 +23,10 @@ public class Main {
         classModBus = new ClassModBus(numEsclave);
         try {
             classModBus.connectEsclave(com, 9600, 8, 0, 2);
-            classModBus.lectureCoils(8192, 2);
+            classModBus.lectureCoils(8192 , 2);
         } catch (SerialPortException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 

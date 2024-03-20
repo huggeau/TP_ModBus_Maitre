@@ -4,7 +4,7 @@ import fr.btsciel.liaisonSerie.LiaisonSerie;
 import jssc.SerialPortException;
 
 public class ClassModBus extends LiaisonSerie {
-    BigEndian bigEndian;
+    BigEndian bigEndian = new BigEndian();
     Crc16 crc16 = new Crc16();
     Byte numeroEsclave;
     byte[] resultatValeur;
@@ -29,13 +29,30 @@ public class ClassModBus extends LiaisonSerie {
         super.initCom(port);
         super.configurerParametres(vitesse, data, parite, stop);
     }
-    public float lectureCoils(int registre, int bloc){
+    public float lectureCoils(int registre, int bloc) throws InterruptedException {
         byte[] tabRegistre = intDeuxByte(registre);
         byte[]  longueur = intDeuxByte(bloc);
         byte[] tabSansCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1]};
         byte[] tabCrc16 = intDeuxByte(crc16.calculCrc16(tabSansCrc16));
         byte[] tabAvecCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1], tabCrc16[1], tabCrc16[0]};
         super.ecrire(tabAvecCrc16);
+
+
+        Thread.sleep(1000);
+        if(super.detecteSiReception() == 9){
+            System.out.println("pass");
+            byte[] trame = super.lireTrame(super.detecteSiReception());
+            byte[] crcRecus = new byte[2];
+            crcRecus[0] = trame[7];
+            crcRecus[1] = trame[8];
+
+            if(crcRecus == tabCrc16){
+                for (int i = 3; i < trame.length-2; i++) {
+
+                }
+            }
+        }
+
         return 0f;
     }
 }

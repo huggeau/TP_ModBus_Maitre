@@ -18,13 +18,13 @@ public class BigEndian {
     }
   
 
-public static  float fromArray(byte[] payload){
+public   float fromArray(byte[] payload){
     ByteBuffer buffer = ByteBuffer.wrap(payload);
     buffer.order(ByteOrder.BIG_ENDIAN);
     return buffer.getFloat();
 }
 
-public static byte[] toArray(float value){
+public byte[] toArray(float value){
     ByteBuffer buffer = ByteBuffer.allocate(4);
     buffer.order(ByteOrder.BIG_ENDIAN);
     buffer.putFloat(value);
