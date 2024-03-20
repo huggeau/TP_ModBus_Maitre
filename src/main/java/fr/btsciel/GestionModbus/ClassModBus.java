@@ -40,15 +40,14 @@ public class ClassModBus extends LiaisonSerie {
 
         Thread.sleep(1000);
         if(super.detecteSiReception() == 9){
-            System.out.println("pass");
             byte[] trame = super.lireTrame(super.detecteSiReception());
             byte[] crcRecus = new byte[2];
             crcRecus[0] = trame[7];
             crcRecus[1] = trame[8];
 
-            if(crcRecus == tabCrc16){
+            if(intDeuxByte(crc16.calculCrc16(crcRecus)) == tabCrc16){
                 for (int i = 3; i < trame.length-2; i++) {
-
+                    System.out.print( bigEndian.fromArray(trame));
                 }
             }
         }
