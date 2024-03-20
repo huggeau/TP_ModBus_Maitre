@@ -8,7 +8,7 @@ import jssc.SerialPortException;
 public class Main {
     public static void main(String[] args) {
         Crc16 crc16 = new Crc16();
-        ClassModBus classModBus = new ClassModBus();
+        ClassModBus classModBus;
         Byte numEsclave;
         String com;
 
@@ -20,9 +20,10 @@ public class Main {
         com = In.readString();
         System.out.println();
 
+        classModBus = new ClassModBus(numEsclave);
         try {
             classModBus.connectEsclave(com, 9600, 8, 0, 2);
-
+            classModBus.lectureCoils(8192, 2);
         } catch (SerialPortException e) {
             throw new RuntimeException(e);
         }

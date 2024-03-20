@@ -33,8 +33,8 @@ public class ClassModBus extends LiaisonSerie {
         byte[] tabRegistre = intDeuxByte(registre);
         byte[]  longueur = intDeuxByte(bloc);
         byte[] tabSansCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1]};
-        byte[] tabAvecCrc16 = intDeuxByte(crc16.calculCrc16(tabSansCrc16));
-        byte[] tabCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1]};
+        byte[] tabCrc16 = intDeuxByte(crc16.calculCrc16(tabSansCrc16));
+        byte[] tabAvecCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1], tabCrc16[1], tabCrc16[0]};
         super.ecrire(tabAvecCrc16);
         return 0f;
     }
