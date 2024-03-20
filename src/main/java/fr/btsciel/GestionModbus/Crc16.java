@@ -7,7 +7,7 @@ public class Crc16 {
     public Crc16() {
     }
 
-    static byte[] formatage (String trame) {
+     public byte[] formatage (String trame) {
         trame = trame.trim().replaceAll(" ","");
         if (trame.length() % 2 != 0) {
             trame = trame + "0";
@@ -16,7 +16,7 @@ public class Crc16 {
             return  hexStringEnByteArray(trame);
         }
     }
-    static byte[] hexStringEnByteArray (String message) {
+     public byte[] hexStringEnByteArray (String message) {
         int len = message.length();
         byte[] data = new byte[len/2];
         for (int i = 0; i < len; i+= 2) {
@@ -25,10 +25,10 @@ public class Crc16 {
         }
         return data;
     }
-    static int calculCrc16 (byte[] octets) {
+     public int calculCrc16 (byte[] octets) {
         int  crc = initialValue;
         for (int p = 0; p < octets.length; p++) {
-            crc ^= (octets[p] & initialValue);
+            crc ^= (octets[p] & 0xff);
             for (int i = 0; i < 8; i++) {
                 if ((crc & 1) != 0) {
                     crc = (crc >> 1) ^ stdPoly;

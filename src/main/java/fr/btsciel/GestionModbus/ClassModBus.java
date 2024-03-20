@@ -5,7 +5,7 @@ import jssc.SerialPortException;
 
 public class ClassModBus extends LiaisonSerie {
     BigEndian bigEndian;
-    Crc16 crc16;
+    Crc16 crc16 = new Crc16();
     Byte numeroEsclave;
     byte[] resultatValeur;
 
@@ -29,9 +29,13 @@ public class ClassModBus extends LiaisonSerie {
         super.initCom(port);
         super.configurerParametres(vitesse, data, parite, stop);
     }
-    public float lectureCoils(int truc, int quelquechose){
-        byte[] trucmuche = new byte[2];
-
-        return 3;
+    public float lectureCoils(int registre, int bloc){
+        byte[] tabRegistre = intDeuxByte(registre);
+        byte[]  longueur = intDeuxByte(bloc);
+        byte[] tabSansCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1]};
+        byte[] tabAvecCrc16 = intDeuxByte(crc16.calculCrc16(tabSansCrc16));
+        byte[] tabCrc16 = {numeroEsclave, (byte) 0x03, tabRegistre[0], tabRegistre[1], longueur[0], longueur[1]};
+        super.ecrire(tabAvecCrc16);
+        return 0f;
     }
 }
