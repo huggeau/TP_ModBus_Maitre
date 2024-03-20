@@ -1,6 +1,7 @@
 package fr.btsciel.GestionModbus;
 
 import fr.btsciel.liaisonSerie.LiaisonSerie;
+import jssc.SerialPortException;
 
 public class ClassModBus extends LiaisonSerie {
     BigEndian bigEndian;
@@ -14,6 +15,7 @@ public class ClassModBus extends LiaisonSerie {
     public ClassModBus() {
     }
     public void fermerLiaisonSerie(){
+        super.fermerPort();
     }
     public byte[] intDeuxByte(int nombre){
         byte[] nombreOctet = new byte[2];
@@ -23,10 +25,12 @@ public class ClassModBus extends LiaisonSerie {
 
         return nombreOctet;
     }
-    public void connectEsclave(String port, int truc, int truc2, int truc3, int truc4){
-
+    public void connectEsclave(String port, int vitesse, int data, int parite, int stop) throws SerialPortException {
+        super.initCom(port);
+        super.configurerParametres(vitesse, data, parite, stop);
     }
     public float lectureCoils(int truc, int quelquechose){
+        byte[] trucmuche = new byte[2];
 
         return 3;
     }

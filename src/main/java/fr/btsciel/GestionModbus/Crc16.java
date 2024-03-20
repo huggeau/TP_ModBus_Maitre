@@ -25,13 +25,13 @@ public class Crc16 {
         }
         return data;
     }
-    static int calculCrc16 (byte[] octets, int valeurInitiale, int polynomme) {
-        int  crc = valeurInitiale;
+    static int calculCrc16 (byte[] octets) {
+        int  crc = initialValue;
         for (int p = 0; p < octets.length; p++) {
-            crc ^= (octets[p] & 0xff);
+            crc ^= (octets[p] & initialValue);
             for (int i = 0; i < 8; i++) {
                 if ((crc & 1) != 0) {
-                    crc = (crc >> 1) ^ polynomme;
+                    crc = (crc >> 1) ^ stdPoly;
                 } else {
                     crc = crc >> 1;
                 }

@@ -6,7 +6,7 @@ import fr.btsciel.clavier.In;
 
 public class Main {
     public static void main(String[] args) {
-        Crc16 crc16;
+        Crc16 crc16 = new Crc16();
         ClassModBus classModBus;
         Byte numEsclave;
         String com;
@@ -18,7 +18,6 @@ public class Main {
         System.out.print("quel est le com a utiliser ? : ");
         com = In.readString();
         System.out.println();
-
 
 
     }
