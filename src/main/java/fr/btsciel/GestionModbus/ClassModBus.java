@@ -3,6 +3,8 @@ package fr.btsciel.GestionModbus;
 import fr.btsciel.liaisonSerie.LiaisonSerie;
 import jssc.SerialPortException;
 
+import java.util.Arrays;
+
 public class ClassModBus extends LiaisonSerie {
     BigEndian bigEndian = new BigEndian();
     Crc16 crc16 = new Crc16();
@@ -41,17 +43,30 @@ public class ClassModBus extends LiaisonSerie {
         Thread.sleep(1000);
         if(super.detecteSiReception() == 9){
             byte[] trame = super.lireTrame(super.detecteSiReception());
-            byte[] crcRecus = new byte[2];
-            crcRecus[0] = trame[7];
-            crcRecus[1] = trame[8];
+            for (int i = 0; i < trame.length; i++) {
+                System.out.print(trame[i] + "_");
+            }
+            System.out.println();
 
-            if(intDeuxByte(crc16.calculCrc16(crcRecus)) == tabCrc16){
+            byte[] crcRecus = new byte[2];
+            crcRecus[0] = trame[8];
+            crcRecus[1] = trame[7];
+
+            byte[] tabSansCrc = new byte[7];
+            for (int i = 0; i < trame.length-2 ; i++) {
+                tabSansCrc[i] = trame[i];
+            }
+
+            byte[] crcRecusCalcule = intDeuxByte(crc16.calculCrc16(tabSansCrc));
+
+            if(Arrays.equals(crcRecusCalcule, crcRecus)){
+                byte[] octetALire = new byte[4];
                 for (int i = 3; i < trame.length-2; i++) {
-                    System.out.print( bigEndian.fromArray(trame));
+                 octetALire[i-3] = trame[i];
                 }
+                System.out.println(bigEndian.fromArray(octetALire));
             }
         }
-
         return 0f;
     }
 }

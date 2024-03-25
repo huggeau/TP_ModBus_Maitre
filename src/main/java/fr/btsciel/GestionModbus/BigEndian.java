@@ -18,7 +18,7 @@ public class BigEndian {
     }
   
 
-public   float fromArray(byte[] payload){
+public  float fromArray(byte[] payload){
     ByteBuffer buffer = ByteBuffer.wrap(payload);
     buffer.order(ByteOrder.BIG_ENDIAN);
     return buffer.getFloat();
